@@ -1,7 +1,13 @@
 const express = require('express');
 const app = express();
 
- 
+ // //Connexion à la base de données MongoDB
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://lliolla:Kiwi260738@cluster0.d9uosbg.mongodb.net/?retryWrites=true&w=majority',
+  { useNewUrlParser: true,
+   useUnifiedTopology: true })
+ .then(() => console.log('Connexion à MongoDB réussie !'))
+ .catch(() => console.log('Connexion à MongoDB échouée !'));
 
   // Eviter les erros CORS afin que tout le monde puisse faire des requêtes
 app.use((req, res, next) => {
