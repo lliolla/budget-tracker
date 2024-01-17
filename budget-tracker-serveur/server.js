@@ -1,7 +1,7 @@
 // Ecoute des requêtes et reponse
 const http = require('http'); // Import du package http de node
 const app = require('./app');
-
+require("dotenv").config();
 
 // Fonction normalizePort renvoie un port valide
 const normalizePort = val => {
@@ -51,4 +51,4 @@ server.on('listening', () => {
 });
 
 // Le serveur écoute la requête envoyée
-server.listen(port);
+server.listen(process.env.PORT);

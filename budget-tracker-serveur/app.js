@@ -1,9 +1,12 @@
 const express = require('express');
+
 const app = express();
+
+require("dotenv").config();
 
  // //Connexion à la base de données MongoDB
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://lliolla:Kiwi260738@cluster0.d9uosbg.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGODB_URI,
   { useNewUrlParser: true,
    useUnifiedTopology: true })
  .then(() => console.log('Connexion à MongoDB réussie !'))
