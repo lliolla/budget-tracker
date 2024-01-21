@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const uniqueValidator = require('mongoose-unique-validator');
 
 const subCategorySchema = mongoose.Schema({
   userId: {
@@ -14,7 +14,7 @@ const subCategorySchema = mongoose.Schema({
   budget:{ 
     type: Number, 
     default:0 },
-  name:{
+  title:{
     type: String,
     required: true }
 });

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
+
 const transactionSchema = mongoose.Schema(
   {
     categoryId: { type: mongoose.Schema.Types.ObjectId, 
@@ -19,15 +20,17 @@ const transactionSchema = mongoose.Schema(
       ref: 'User', required: true 
     },
     seller: { 
-      type: String, required: true 
+      type: String 
     },
   date:{type: Date,
-    required: true },
+    required: true ,
+    default: Date.now
+  },
 
  comment: { type: String, required: true },
   
     amount: {
-      type: Number,
+      type: mongoose. Decimal128,
       required: true
     } ,
     type: {
