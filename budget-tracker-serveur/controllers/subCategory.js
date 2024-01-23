@@ -19,14 +19,14 @@ exports.getOneSubCategory = async (req, res) => {
   }; 
 
 exports.createSubCategory = async (req, res) => {
-  const { userId, categoryId, budget, name} = req.body;
+  const { userId, categoryId, budget, title} = req.body;
 
   try {
     const newSubCategory = new SubCategory({
         categoryId, 
         userId, 
         budget, 
-        name
+        title
     });
 
     const savedSubCategory = await newSubCategory.save();
