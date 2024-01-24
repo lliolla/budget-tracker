@@ -29,28 +29,28 @@ exports.createSubCategory = async (req, res) => {
         title
     });
 
-    const savedSubCategory = await newSubCategory.save();
-    res.status(201).json(savedSubCategory);
+  newSubCategory.save();
+    res.status(201).json({ message: 'Sous-catégorie crée avec succès'});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 exports.deleteSubCategory = async (req, res) => {
     try {
-        const subcategory = await SubCategory.findByIdAndDelete(req.params.id);
-        res.json(subcategory);
+      SubCategory.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Sous-catégorie suprimée avec succès'});
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   }; 
   exports.updateSubCategory = async (req, res) => {
     try {
-        const subcategory = await SubCategory.findByIdAndUpdate(
+      SubCategory.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
             );
-        res.json(subcategory);
+        res.json({ message: 'Sous-catégorie modifiée avec succès'});
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

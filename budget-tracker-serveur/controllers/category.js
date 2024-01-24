@@ -32,8 +32,8 @@ exports.getOneCategory = async (req, res) => {
         title
       });
   
-      const savedCategory = await newCategory.save();
-      res.status(201).json(savedCategory);
+      newCategory.save();
+      res.status(201).json({ message: 'Catégorie crée avec succès'});
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -41,20 +41,20 @@ exports.getOneCategory = async (req, res) => {
   exports.updateCategory = async (req, res) => {
     let id=req.params.id
     try {
-      const category = await Category.findByIdAndUpdate(
+     Category.findByIdAndUpdate(
         id,
         req.body,
         { new: true }
       );
-      res.json(category);
+      res.json({ message: 'Catégorie modifiée avec succès'});
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
 };
 exports.deleteCategory = async (req, res) => {
     try {
-        const category = await Category.findByIdAndDelete(req.params.id);
-        res.json(category);
+        Category.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Catégorie suprimée avec succès'});
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
