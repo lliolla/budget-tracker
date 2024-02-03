@@ -1,0 +1,6 @@
+# liste de répertoires sur lesquels je ne veux pas que Prettier gaspille des ressources
+
+.pnpm
+.next
+dist
+node_modules

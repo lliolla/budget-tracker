@@ -1,0 +1,9 @@
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",// fromateur par defaut
+    "editor.formatOnSave": true,//active la fonctionnalité de formatage automatique à chaque sauvegarde
+    //applique automatiquement toutes les corrections possibles et qu’il réorganise les importations chaque fois qu’un fichier est sauvegardé.
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
+    }
+  }
