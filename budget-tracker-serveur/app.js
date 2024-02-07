@@ -36,8 +36,8 @@ app.use(express.json());
 //app.use('/images', express.static(path.join(__dirname, 'images'))); // pour que app.js serve le dossier /images 
 app.use('/api/v1/auth', userRoutes);// pour l'authentification de l'utilisateur
 app.use('/api/v1', transactionRoutes);// pour le crud des transactions
-app.use('/api/v1', categoryRoutes);// pour le crud des transactions
-app.use('/api/v1', subcategoryRoutes);// pour le crud des transactions
+app.use('/api/v1', categoryRoutes);// pour le crud des categories
+app.use('/api/v1', subcategoryRoutes);// pour le crud des sous cat
 
 app.use((req, res) => {
    res.json({ message: 'Votre requête a bien été reçue !' }); 
