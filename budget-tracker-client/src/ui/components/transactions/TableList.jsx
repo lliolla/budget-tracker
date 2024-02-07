@@ -1,14 +1,27 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'next/link'    
-import { useRouter } from 'next/navigation';
+
 import { RiDeleteBin5Line ,RiPencilLine} from "react-icons/ri";
+import Modal from 'ui/components/modal';
 
 
-const TableList = ({transactions, index}) => {
-    const router = useRouter();
+const TableList = ({transactions}) => {
+  
+    const [selectedItemId, setSelectedItemId] = useState(null);
+
+    const openEditModal = (id) => {
+        setSelectedItemId(id);
+      };
+
+      const openDeleteModal = (id) => {
+        setSelectedItemId(id);
+      };
+
+      const closeModals = () => {
+        setSelectedItemId(null);
+      };
     
-
     
   return (
     <main className="antialiased font-sans bg-gray-200">
@@ -155,14 +168,14 @@ const TableList = ({transactions, index}) => {
                                    <div className="flex "> 
                                    <span
                                         className="relative inline-block mx-2 px-2 py-2 font-semibold text-green-900 leading-tight"
-                                        onClick={()=>router.push(`/edit/${transaction._id}`)}>
+                                        onClick={openEditModal}>
                                         <span aria-hidden
                                             className=" absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
                                         <span className="relative"><RiPencilLine /></span>
                                     </span>  
                                     <span
                                         className="relative inline-block mx-2 px-2 py-2 font-semibold text-red-900 leading-tight"
-                                        onClick={()=>router.push(`/delete/${transaction._id}`)}>
+                                        onClick={openDeleteModal}>
                                         <span aria-hidden
                                             className="  absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
                                         <span className="relative"><RiDeleteBin5Line /></span>
@@ -194,7 +207,7 @@ const TableList = ({transactions, index}) => {
             </div>
         </div>
     </div>
-</main>
+    {selectedItemId && <Modal isOpen={true} onClose={closeModals} itemId={selectedItemId} />}</main>
   )
 }
 
