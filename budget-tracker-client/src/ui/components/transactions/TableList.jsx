@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { RiDeleteBin5Line ,RiPencilLine} from "react-icons/ri";
 
 
-const TableList = ({transactions}) => {
+const TableList = ({transactions, index}) => {
     const router = useRouter();
     
 
@@ -102,7 +102,7 @@ const TableList = ({transactions}) => {
                         </thead>
                         <tbody>
                             {transactions.map((transaction) => (
-                                <tr key={transaction.id } > 
+                                <tr key={transaction._id } > 
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <div className='flex items-center'>
                                         <div className="flex-shrink-0 w-8 h-8">
@@ -162,7 +162,7 @@ const TableList = ({transactions}) => {
                                     </span>  
                                     <span
                                         className="relative inline-block mx-2 px-2 py-2 font-semibold text-red-900 leading-tight"
-                                        onclick={()=>router.push(`/delete/${transaction._id}`)}>
+                                        onClick={()=>router.push(`/delete/${transaction._id}`)}>
                                         <span aria-hidden
                                             className="  absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
                                         <span className="relative"><RiDeleteBin5Line /></span>
