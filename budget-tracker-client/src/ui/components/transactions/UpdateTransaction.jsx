@@ -1,8 +1,8 @@
-import { Console, log } from 'console';
+
 import { useRouter } from 'next/router'
 import React from 'react'
-const router = useRouter();
-const id = router.query.id
+// const router = useRouter();
+// const id = router.query.id
 
 const UpdateTransactionForm = ({id}) => {
  console.log("id",id)

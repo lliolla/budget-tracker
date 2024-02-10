@@ -1,27 +1,40 @@
 'use client'
 import React, { useState } from 'react'
-import { Link } from 'next/link'    
-
+import { format } from 'date-fns';
+   
 import { RiDeleteBin5Line ,RiPencilLine} from "react-icons/ri";
 import Modal from 'ui/components/modal';
+import UpdateTransaction from 'ui/components/transactions/UpdateTransaction';
 
 
 const TableList = ({transactions}) => {
-  
+    // Formatage de la date au format "jj mm aa"
+    const formatDate = (date) => {
+        return format(new Date(date), 'dd MM yy');
+    };
     const [selectedItemId, setSelectedItemId] = useState(null);
+    const [actionType, setActionType] = useState(null);
 
     const openEditModal = (id) => {
         setSelectedItemId(id);
+        setActionType('edit');
+        console.log("setActionType", setActionType);
       };
 
       const openDeleteModal = (id) => {
         setSelectedItemId(id);
+        setActionType('delete')
+        console.log("setActionType", setActionType);
       };
 
       const closeModals = () => {
         setSelectedItemId(null);
+        setActionType(null)
       };
-    
+     const handleDeleteConfirmation = () => {
+         console.log("suppression confirmée");
+         closeModals();
+     }
     
   return (
     <main className="antialiased font-sans bg-gray-200">
@@ -79,32 +92,32 @@ const TableList = ({transactions}) => {
                         <thead>
                             <tr className='odd:bg-white even:bg-slate-50' >
                                 <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate">
                                     Catégorie
                                 </th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider ">
+                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate ">
                                   Sous categorie 
                                 </th>
                                 <th
-                                    className=" items-center px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    className=" items-center px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider  max-w-xs truncate">
                                     Date
                                     
                                 </th>
                                 <th
                                  
-                                    className="w-6 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider ">
+                                    className="w-6 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider  max-w-xs truncate">
                                     description
                                 </th>
                                 <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate">
                                     Montant
                                 </th>
                                 <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate">
                                    Type
                                 </th>
                                 <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate">
                                    Vendeur
                                 </th>
                                 <th
@@ -146,7 +159,7 @@ const TableList = ({transactions}) => {
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                    {transaction.date}
+                                    {formatDate(transaction.date)}
                                     </p>
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
@@ -207,7 +220,23 @@ const TableList = ({transactions}) => {
             </div>
         </div>
     </div>
-    {selectedItemId && <Modal isOpen={true} onClose={closeModals} itemId={selectedItemId} />}</main>
+    {selectedItemId && (
+                <Modal isOpen={true} onClose={closeModals} itemId={selectedItemId}>
+                    {actionType === 'edit' ? (
+                        <UpdateTransaction id={selectedItemId} />
+                    ) : actionType === 'delete' ? (
+                        <div>
+                            <h2 className="text-xl font-semibold mb-4">Confirmation de suppression</h2>
+                            <p>Êtes-vous sûr de vouloir supprimer cette transaction ?</p>
+                            <div className="flex mt-4">
+                                <button onClick={handleDeleteConfirmation} className="mr-4 bg-red-500 text-white px-4 py-2 rounded-md">Oui</button>
+                                <button onClick={closeModals} className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md">Non</button>
+                            </div>
+                        </div>
+                    ) : null}
+                </Modal>
+            )}
+     </main>
   )
 }
 
