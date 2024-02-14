@@ -1,11 +1,11 @@
 import React from 'react'
-import NewTransactionForm from 'ui/components/transactions/NewTransaction'
+import FormTransaction from 'ui/components/transactions/FormTransaction'
 
 const page = () => {
   return (
     <div>
     <p>  nouvelle transaction</p>
-    <NewTransactionForm/>
+    <FormTransaction/>
 
     </div>
   )

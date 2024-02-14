@@ -4,7 +4,7 @@ import { format } from 'date-fns';
    
 import { RiDeleteBin5Line ,RiPencilLine} from "react-icons/ri";
 import Modal from 'ui/components/modal';
-import UpdateTransaction from 'ui/components/transactions/UpdateTransaction';
+import UpdateTransaction from 'ui/components/transactions/FormTransaction';
 
 
 const TableList = ({transactions}) => {
