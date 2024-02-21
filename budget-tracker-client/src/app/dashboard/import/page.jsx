@@ -1,6 +1,40 @@
-import React from 'react'
+'use client'
+import React, {useState} from 'react'
 
+import axios from 'axios';
 const page = () => {
+ // State pour stocker le fichier sélectionné
+ const [selectedFile, setSelectedFile] = useState(null);
+
+ // Fonction pour gérer la sélection de fichier
+ const handleFileChange = (event) => {
+   setSelectedFile(event.target.files[0]);
+ };
+
+ // Fonction pour envoyer le fichier au backend
+ const handleFileUpload = async () => {
+   try {
+     if (!selectedFile) {
+       console.error('No file selected');
+       return;
+     }
+
+     const formData = new FormData();
+     formData.append('file', selectedFile);
+
+     const response = await axios.post('http://localhost:5050/api/v1/import', formData, {
+       headers: {
+         'Content-Type': 'multipart/form-data'
+       }
+     });
+
+     console.log('File uploaded successfully:', response.data);
+     // Réinitialiser le fichier sélectionné après l'envoi
+     setSelectedFile(null);
+   } catch (error) {
+     console.error('Error uploading file:', error);
+   }
+ };
   return (
   
      <main className="antialiased font-sans bg-gray-200">
@@ -14,8 +48,19 @@ const page = () => {
              <div className='mb-10'>
                 <label htmlFor="csv" className="block text-gray-700 text-sm font-bold mb-2">Importer votre fichier</label>
              <input
-             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-             type="file" name="" id="" /></div>
+             className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+             type="file" name="" 
+             id=""
+             onChange={handleFileChange}  />
+              <div className="px-4 py-4-t flex items-center justify-end">
+            <button
+              className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+           
+              onClick={handleFileUpload}
+            //   disabled={!selectedFile}
+              >Envoyer</button>
+          </div>
+          </div>
              {/*tableau */}
             
              <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -30,9 +75,7 @@ const page = () => {
                                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate ">
                                   Descriptif
                                  </th>
-                               
-                                
-                                
+                        
                                  <th
                                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Action

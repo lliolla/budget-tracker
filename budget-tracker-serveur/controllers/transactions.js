@@ -52,7 +52,7 @@ exports.createTransaction = async (req, res) => {
         seller, 
         date, 
         comment, 
-        amount
+        amount,
     });
 
    await newTransaction.save();

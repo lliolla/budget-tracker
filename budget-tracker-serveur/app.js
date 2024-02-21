@@ -8,7 +8,7 @@ const userRoutes = require('./routes/user');
 const transactionRoutes = require('./routes/transactions');
 const categoryRoutes = require('./routes/category');
 const subcategoryRoutes = require('./routes/subcategory');
-
+const importRoutes = require('./routes/import');
  // //Connexion à la base de données MongoDB
 
 mongoose.connect(process.env.MONGODB_URI,
@@ -33,8 +33,11 @@ app.use(express.json());
 //app.use(helmet()); // helmet configure de manière appropriée des en-têtes HTTP, contient 9 fonctions middlewares
 
 
-//app.use('/images', express.static(path.join(__dirname, 'images'))); // pour que app.js serve le dossier /images 
-app.use('/api/v1/auth', userRoutes);// pour l'authentification de l'utilisateur
+// Utilisation du middleware pour servir les images
+// app.use('/images', express.static(path.join(__dirname, 'images')));
+// // Utilisation du middleware pour servir les fichiers Excel
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));app.use('/api/v1/auth', userRoutes);// pour l'authentification de l'utilisateur
+app.use('/api/v1', importRoutes);
 app.use('/api/v1', transactionRoutes);// pour le crud des transactions
 app.use('/api/v1', categoryRoutes);// pour le crud des categories
 app.use('/api/v1', subcategoryRoutes);// pour le crud des sous cat

@@ -38,6 +38,7 @@ const transactionSchema = mongoose.Schema(
       enum: ['recette', 'depense'],
       required: true
     },
+    fileUrl: String // Champ pour stocker le chemin du fichier image
 
   }
 );
