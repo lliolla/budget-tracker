@@ -27,10 +27,11 @@ const Modal = ({ isOpen, onClose, itemId, children }) => {
             <div className="absolute bg-white rounded-lg  p-8 shadow-lg flex flex-col">
                 
                 {children}
+                {/* modifier le bouton de supo en btn envoyer formulaire et preveoir une croix de fermeture de formulaire */}
                     <button
-                          onClick={handleClose}
+                        onClick={handleClose}
                         type="button"
-                        className="py-2.5 px-4 mt-5 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-cyan-500 text-white hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 transition-all text-sm"
+                        className="py-2.5 px-4 mt-5 uppercase font-bold inline-flex justify-center items-center gap-2 rounded-md border border-transparent  bg-cyan-500 text-white hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 transition-all text-sm"
                     >
                         Fermer
                     </button>

@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { format } from 'date-fns';
    
-import { RiDeleteBin5Line ,RiPencilLine} from "react-icons/ri";
+import { RiDeleteBin5Line ,RiPencilLine,RiAddLine} from "react-icons/ri";
 import Modal from 'ui/components/modal';
 import UpdateTransaction from 'ui/components/transactions/FormTransaction';
 
@@ -14,11 +14,19 @@ const TableList = ({transactions}) => {
     };
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [actionType, setActionType] = useState(null);
+    const [titleModal , setTitleModal] = useState(null);
 
     const openEditModal = (id) => {
         setSelectedItemId(id);
         setActionType('edit');
-        console.log("setActionType", setActionType);
+        setTitleModal('Modifier une transaction');
+        console.log("setActionType", titleModal,actionType);
+      };
+      const openCreateModal = (id) => {
+        setSelectedItemId(id);
+        setTitleModal('Créer une transaction');
+        setActionType('edit');
+        console.log("setActionType",  titleModal,actionType);
       };
 
       const openDeleteModal = (id) => {
@@ -39,6 +47,7 @@ const TableList = ({transactions}) => {
   return (
     <main className="antialiased font-sans bg-gray-200">
     <div className="container mx-auto px-4 sm:px-8">
+        {/*tableau */}
         <div className="py-8">
             <div>
                 <h2 className="text-2xl font-semibold leading-tight">Liste des dépenses </h2>
@@ -74,6 +83,7 @@ const TableList = ({transactions}) => {
                         </div>
                     </div>
                 </div>
+                {/* bandeau  Search */}
                 <div className="block relative">
                     <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">
                         <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current text-gray-500">
@@ -84,7 +94,15 @@ const TableList = ({transactions}) => {
                     </span>
                     <input placeholder="Search"
                         className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
+                    
                 </div>
+                <span
+                                        className="relative inline-block mx-2 px-2 py-2 font-semibold text-green-900 leading-tight"
+                                        onClick={openCreateModal}>
+                                        <span aria-hidden
+                                            className=" absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                        <span className="relative"><RiAddLine /></span>
+                                    </span>  
             </div>
             <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                 <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -220,6 +238,7 @@ const TableList = ({transactions}) => {
             </div>
         </div>
     </div>
+      {/* Modal */}
     {selectedItemId && (
                 <Modal isOpen={true} onClose={closeModals} itemId={selectedItemId}>
                     {actionType === 'edit' ? (

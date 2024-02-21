@@ -9,7 +9,7 @@ const UpdateTransactionForm = ({id}) => {
   return (
   
     <div className="  mb-2 my-2 flex flex-col w-72 overflow-y-auto max-h-[80vh]">
-   <h2 className='text-xl  text-slate-50 font-semibold uppercase p-2 mb-5 text-center bg-cyan-600'>Créer une transaction</h2>   
+   <h2 className='text-lg text-slate-50 font-semibold uppercase p-2 mb-5 text-center bg-cyan-600'> modifier une transaction</h2>   
    
     <form class="relative  flex flex-col justify-center">
     <label className="uppercase tracking-wide text-sm font-semibold text-gray-900 mb-2 pt-2" htmlFor="grid-last-name">
