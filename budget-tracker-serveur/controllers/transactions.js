@@ -81,3 +81,33 @@ exports.deleteTransaction = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   }; 
+// Fonction pour mapper les objets et les intégrer à la base de données
+exports.integrateTransactions = async (data) => {
+  try {
+    // Parcourez chaque objet dans les données
+    for (const item of data) {
+      // Extrait les informations nécessaires pour créer un document de transaction
+      const { NuméroCompte, seller, date, comment, amount } = item;
+
+      // Créez une instance de modèle de transaction avec ces informations
+      const transaction = new Transaction({
+        categoryId: '65d627c16bb89832861bceaa', // Remplacez par l'ID de la catégorie appropriée
+        subcategoryId: '65d627f76bb89832861bceae', // Remplacez par l'ID de la sous-catégorie appropriée
+        userId: transaction.userId, // Remplacez par l'ID de l'utilisateur approprié
+        seller: seller,
+        date: new Date(date),
+        comment: comment,
+        amount: amount,
+        type: amount >= 0 ? 'recette' : 'depense', // Déterminez le type de transaction en fonction du montant
+        fileUrl: '' // Vous pouvez ajouter le chemin du fichier image ici si nécessaire
+      });
+
+      // Enregistrez cette instance dans la base de données
+      await transaction.save();
+    }
+
+    console.log('Transactions integrated successfully');
+  } catch (error) {
+    console.error('Error integrating transactions:', error);
+  }
+};
