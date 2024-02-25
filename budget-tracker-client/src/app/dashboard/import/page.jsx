@@ -12,36 +12,54 @@ const page = () => {
  const [uploadedData, setUploadedData] = useState(null);
 
 //onchange event : see file's content on table
- const handleFileChange = (event) => {
+const handleFileChange = (event) => {
     let fileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
     const file = event.target.files[0];
     setSelectedFile(event.target.files[0]);
     console.log('File selected:', file)
+    
     if (event.target.files.length === 0) {
         setTypeError('Merci de sélectionner un fichier');
         setUploadedData(null);
-    } else {
-     
-        if (fileTypes.includes(file.type)) {
-            setTypeError(null);
-            let reader = new FileReader();
-            reader.readAsArrayBuffer(file);
-            reader.onload = (e) => {
-                console.log("Contenu du fichier Excel :", e.target.result);
-                const workbook = XLSX.read(e.target.result, { type: 'buffer' });
-                const worksheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[worksheetName];
-                const data = XLSX.utils.sheet_to_json(worksheet);
-                console.log("Données obtenues à partir du fichier Excel :", data);
-                setUploadedData(data);
-            }
-        } else {
-            setTypeError('Merci de sélectionner un fichier de type csv ou excel');
-            setUploadedData(null);
-        }
+        return; // Sortie de la fonction si aucun fichier n'est sélectionné
     }
- };
- 
+    
+    if (!fileTypes.includes(file.type)) {
+        setTypeError('Merci de sélectionner un fichier de type csv ou excel');
+        setUploadedData(null);
+        return; // Sortie de la fonction si le type de fichier n'est pas pris en charge
+    }
+
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    
+    reader.onload = (e) => {
+        console.log("Contenu du fichier Excel :", e.target.result);
+        const workbook = XLSX.read(e.target.result, { type: 'buffer' });
+        const worksheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[worksheetName];
+        const data = XLSX.utils.sheet_to_json(worksheet, { raw: false, defval: null });
+        console.log("Données obtenues à partir du fichier Excel :", data);
+        
+        // Vérifier chaque valeur dans la colonne "Montant" et corriger le format si nécessaire
+        data.forEach((row) => {
+            if (row.hasOwnProperty('Montant') && typeof row.Montant === 'string') {
+                row.Montant = row.Montant.replace(',', '.'); // Remplacer les virgules par des points pour les nombres décimaux
+                row.Montant = parseFloat(row.Montant); // Convertir en nombre
+            }
+        });
+        
+        setUploadedData(data);
+    };
+
+    reader.onerror = (error) => {
+        console.error('Error reading the file:', error);
+        setTypeError('Une erreur est survenue lors de la lecture du fichier');
+        setUploadedData(null);
+    };
+};
+
+
 
  // submit event
  const handleFileUpload = async () => {
@@ -109,7 +127,10 @@ const page = () => {
                 {uploadedData.slice(0, 10).map((row, rowIndex) => (
                     <tr key={rowIndex}>
                         {Object.values(row).map((value, colIndex) => (
-                            <td key={colIndex}>{value}</td>
+                            <td key={colIndex}>
+                                {/* Vérifiez si la valeur est numérique avant de la formater */}
+                                {typeof value === 'number' ? value.toLocaleString('fr-FR') : value}
+                            </td>
                         ))}
                     </tr>
                 ))}
