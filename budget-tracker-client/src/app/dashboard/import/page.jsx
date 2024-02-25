@@ -1,7 +1,9 @@
 'use client'
 import React, {useState} from 'react'
-
+import * as XLSX from 'xlsx';
 import axios from 'axios';
+
+
 
 const page = () => {
  // State pour stocker le fichier sélectionné et les message d'erreur
@@ -12,18 +14,26 @@ const page = () => {
 //onchange event : see file's content on table
  const handleFileChange = (event) => {
     let fileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
+    const file = event.target.files[0];
     setSelectedFile(event.target.files[0]);
+    console.log('File selected:', file)
     if (event.target.files.length === 0) {
         setTypeError('Merci de sélectionner un fichier');
         setUploadedData(null);
     } else {
-        const file = event.target.files[0];
+     
         if (fileTypes.includes(file.type)) {
             setTypeError(null);
             let reader = new FileReader();
             reader.readAsArrayBuffer(file);
             reader.onload = (e) => {
-                setUploadedData(e.target.result);
+                console.log("Contenu du fichier Excel :", e.target.result);
+                const workbook = XLSX.read(e.target.result, { type: 'buffer' });
+                const worksheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[worksheetName];
+                const data = XLSX.utils.sheet_to_json(worksheet);
+                console.log("Données obtenues à partir du fichier Excel :", data);
+                setUploadedData(data);
             }
         } else {
             setTypeError('Merci de sélectionner un fichier de type csv ou excel');
@@ -52,6 +62,7 @@ const page = () => {
 
      console.log('File uploaded successfully:', response.data);
      // Réinitialiser le fichier sélectionné après l'envoi
+     setUploadedData(response.data);
      setSelectedFile(null);
    } catch (error) {
      console.error('Error uploading file:', error);
@@ -81,123 +92,38 @@ const page = () => {
               {typeError && <span class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">{typeError}</span>}
           </div>
           </form>
+          {/* view content files */}
+             <div>
+             {uploadedData && uploadedData.length > 0 ? (
+    <div>
+        <p>Afficher le résultat de l'import</p>
+        <table>
+            <thead>
+                <tr>
+                    {Object.keys(uploadedData[0]).map((key) => (
+                        <th key={key}>{key}</th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {uploadedData.slice(0, 10).map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                        {Object.values(row).map((value, colIndex) => (
+                            <td key={colIndex}>{value}</td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+) : (
+    <div>Il n'y a pas de données à afficher</div>
+)}
+             </div>
              {/*list of files imported */}
             
-             <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                 <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                     <table className="min-w-full leading-normal">
-                         <thead>
-                             <tr className='odd:bg-white even:bg-slate-50' >
-                                 <th
-                                     className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate">
-                                     Période 
-                                 </th>
-                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate ">
-                                  Descriptif
-                                 </th>
-                        
-                                 <th
-                                     className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Action
-                                 </th>
-                             </tr>
-                         </thead>
-                         <tbody>
-                           
-                                 <tr> 
-                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                         <div className='flex items-center'>
-                                         <div className="flex-shrink-0 w-8 h-8">
-                                             <img className="w-full h-full rounded-full"
-                                                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                 alt="" />
-                                         </div>
-                                         <div className="ml-3">
-                                             <p className="text-gray-900 whitespace-no-wrap">
-                                             te
-                                             </p>
-                                         </div>
-                                         </div>
-                                     </td>  
-                                     <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                 <div className="flex items-center">
-                                         <div className="flex-shrink-0 w-8 h-8">
-                                             <img className="w-full h-full rounded-full"
-                                                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                 alt="" />
-                                         </div>
-                                         <div className="ml-3">
-                                             <p className="text-gray-900 whitespace-no-wrap">
-                                         te
-                                             </p>
-                                         </div>
-                                     </div>
-                                 </td>
-                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                     <p className="text-gray-900 whitespace-no-wrap">
-                                   te
-                                     </p>
-                                 </td>
-                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                 <p className="text-gray-900 whitespace-no-wrap">
-                                    te
-                                     </p>
-                                   
-                                 </td>
-                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                     <p> €</p>
-                                 </td>
-                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                     <p>o</p>
-                                 </td>
-                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                     <p>p</p>
-                                 </td>
-                                 <td className=" px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                    <div className="flex "> 
-                                    <span
-                                         className="relative inline-block mx-2 px-2 py-2 font-semibold text-green-900 leading-tight"
-                                         >
-                                         <span aria-hidden
-                                             className=" absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                         <span className="relative">p</span>
-                                     </span>  
-                                     <span
-                                         className="relative inline-block mx-2 px-2 py-2 font-semibold text-red-900 leading-tight"
-                                         >
-                                         <span aria-hidden
-                                             className="  absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                         <span className="relative">p</span>
-                                     </span></div>
-                                 </td> 
-                                 </tr> 
-                         </tbody>
-                     </table>
-                     <div
-                         className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                         <span className="text-xs xs:text-sm text-gray-900">
-                             Showing 1 to 4 of 50 Entries
-                         </span>
-                         <div className="inline-flex mt-2 xs:mt-0">
-                             <button
-                                 className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
-                                 Prev
-                             </button>
-                             <button
-                                 className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
-                                 Next
-                             </button>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             {/* view content files */}
-             <div>
-             {uploadedData?
-             (<div><p>afficher le resultat de l'import</p></div>)
-             :
-             (<div>Il n'y a pas de données a afficher</div>) }
-             </div>
+           
+             
          </div>
      </div>
     
