@@ -115,11 +115,13 @@ const handleFileChange = (event) => {
              {uploadedData && uploadedData.length > 0 ? (
     <div>
         <p>Afficher le résultat de l'import</p>
-        <table>
+        <table className="min-w-full leading-normal">
             <thead>
-                <tr>
+                <tr  className='odd:bg-white even:bg-slate-50'>
                     {Object.keys(uploadedData[0]).map((key) => (
-                        <th key={key}>{key}</th>
+                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate" 
+                        key={key}>{key}
+                </th>
                     ))}
                 </tr>
             </thead>
@@ -127,7 +129,7 @@ const handleFileChange = (event) => {
                 {uploadedData.slice(0, 10).map((row, rowIndex) => (
                     <tr key={rowIndex}>
                         {Object.values(row).map((value, colIndex) => (
-                            <td key={colIndex}>
+                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm" key={colIndex}>
                                 {/* Vérifiez si la valeur est numérique avant de la formater */}
                                 {typeof value === 'number' ? value.toLocaleString('fr-FR') : value}
                             </td>
