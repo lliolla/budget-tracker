@@ -8,6 +8,7 @@ router.get('/transaction/:id',transactionCtrl.getOneTransaction);
 router.post('/transaction',transactionCtrl.createTransaction);
 router.put('/transaction/:id',transactionCtrl.updateTransaction);
 router.delete('/transaction/:id',transactionCtrl.deleteTransaction);
+router.delete('/transaction/:id',transactionCtrl.deleteAllTransaction);
 
 router.post('/transaction/import',transactionCtrl.integrateTransactions);
 

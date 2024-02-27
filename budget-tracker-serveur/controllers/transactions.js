@@ -69,6 +69,14 @@ exports.deleteTransaction = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   }; 
+  exports.deleteAllTransaction = async (req, res) => {
+    try {
+        await Transaction.deleteMany(); 
+        res.json({ message: "Toutes les transactions ont été supprimées" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
   exports.updateTransaction = async (req, res) => {
     try {
          await Transaction.findByIdAndUpdate(

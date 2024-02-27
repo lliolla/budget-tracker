@@ -156,7 +156,7 @@ const TableList = ({transactions}) => {
                                         </div>
                                         <div className="ml-3">
                                             <p className="text-gray-900 whitespace-no-wrap">
-                                                {transaction.categoryId.title}
+                                                {transaction.categoryId ? transaction.categoryId.title : ''}
                                             </p>
                                         </div>
                                         </div>
@@ -170,7 +170,7 @@ const TableList = ({transactions}) => {
                                         </div>
                                         <div className="ml-3">
                                             <p className="text-gray-900 whitespace-no-wrap">
-                                            {transaction.subcategoryId.title}
+                                            {transaction.categoryId ? transaction.subcategoryId.title : ''}
                                             </p>
                                         </div>
                                     </div>
@@ -182,12 +182,12 @@ const TableList = ({transactions}) => {
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                    {transaction.comment}
+                                    {transaction.Libellé}
                                     </p>
                                   
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                    <p>{transaction.amount.$numberDecimal.toString()} €</p>
+                                    <p>{transaction.Montant.$numberDecimal.toString()} €</p>
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
                                     <p>{transaction.type}</p>

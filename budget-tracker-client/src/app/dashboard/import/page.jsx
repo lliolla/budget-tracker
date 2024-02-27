@@ -104,9 +104,7 @@ const handleFileChange = (event) => {
              required
              onChange={handleFileChange}  />
               <div className="px-4 py-4-t flex items-center justify-end">
-            <button
-              className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-              onClick={handleFileUpload}>Envoyer</button>
+            
               {typeError && <span class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">{typeError}</span>}
           </div>
           </form>
@@ -115,6 +113,9 @@ const handleFileChange = (event) => {
              {uploadedData && uploadedData.length > 0 ? (
     <div>
         <p>Afficher le résultat de l'import</p>
+        <button
+              className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+              onClick={handleFileUpload}>Importer les donnes</button>
         <table className="min-w-full leading-normal">
             <thead>
                 <tr  className='odd:bg-white even:bg-slate-50'>
