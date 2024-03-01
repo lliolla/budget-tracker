@@ -182,18 +182,18 @@ const TableList = ({transactions}) => {
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                    {transaction.Libellé}
+                                    {transaction.Libellé ? transaction.Libellé : ''}
                                     </p>
                                   
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                    <p>{transaction.Montant.$numberDecimal.toString()} €</p>
+                                    <p>{transaction.Montant ? transaction.Montant.$numberDecimal.toString() : ""} €</p>
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                    <p>{transaction.type}</p>
+                                    <p>{transaction.type ? transaction.type : ''}</p>
                                 </td>
                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
-                                    <p>{transaction.seller}</p>
+                                    <p>{transaction.seller ? transaction.seller : ''}</p>
                                 </td>
                                 <td className=" px-4 py-4 border-b border-gray-200 bg-white text-sm">
                                    <div className="flex "> 
