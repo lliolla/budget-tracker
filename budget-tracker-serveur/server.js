@@ -62,7 +62,8 @@ const filePath = './uploads/import.csv'; // Mettez le chemin absolu ou relatif v
 const testImportTransactions = () => {
   try {
     const transactions = importTransactions(filePath);
-    console.log('Transactions importées :', transactions.length,transactions);
+    console.log('Transactions importées :', transactions.length);
+    
   } catch (error) {
     console.error('Une erreur s\'est produite lors de l\'importation des transactions :', error);
   }
