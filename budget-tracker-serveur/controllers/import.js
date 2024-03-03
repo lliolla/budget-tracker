@@ -22,17 +22,9 @@ const formatNumberWithCommas = (number) => {
     return formattedNumber;
     
 };
-const mapFields = (element) => {
-  
-  return {
-      date: new Date(element.Date),
-      libelle: element['Libellé'],
-      montant: element.Montant,
-      type: element.Type,
-      createdAt: new Date(),
-      updatedAt: new Date()
-  };
-};
+
+
+
 
 const processFile =  (wb,SheetName) => {
   //read csv file
@@ -40,47 +32,53 @@ const processFile =  (wb,SheetName) => {
   // transform csv to json
   const json = xlsx.utils.sheet_to_json(ws);
   //in sheet map row and transform amountin number with ,
-  console.log("SheetNames", json);
+ 
   json.forEach(element => {
-    // Vérifier si la date est un nombre
+    // Convertir la date si nécessaire
     if (typeof element.Date === 'number') {
-      // Convertir le nombre en date
-      const date = new Date(Math.floor((element.Date - 25569) * 86400 * 1000));
-      // Formater la date selon le format souhaité (à adapter)
-      const formattedDate = date.toLocaleDateString('fr-FR');
-      element.Date = formattedDate;
+        const date = new Date(Math.floor((element.Date - 25569) * 86400 * 1000));
+        const formattedDate = date.toLocaleDateString('fr-FR'); // Adapter au format de date souhaité
+        element.Date = formattedDate;
     }
     const formattedAmount = formatNumberWithCommas(element.Montant);
     element.Montant = formattedAmount;
-    console.log("element", element);
+  
   });
+
   return json;
 };
 
+const importTransactions = async() => {
+  const wb = xlsx.readFile(filePath);
+  let datas = [];
 
-
-const importTransactions = (filePath) => {
-
-    const wb = xlsx.readFile(filePath);
-    let datas =[];
-    
-    wb.SheetNames.forEach((sheetName) => {
-      const convertFile = processFile(wb,sheetName)
-      console.log("nb d'array ds convertFile", convertFile.length,convertFile[50]);
+  wb.SheetNames.forEach((sheetName) => {
+      const convertFile = processFile(wb, sheetName);
       datas = datas.concat(convertFile);
-    console.log("datas avant insertion", datas[50]);
+  });
+  
+try {
+  for (const data of datas) {
+    // Convertir la chaîne de caractères représentant la date en objet Date
+    const dateParts = data.Date.split('/');
+    const date = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+    console.log("date:", date, "description:", data.Description, "montant:", data.Montant); // Vérifier les valeurs avant de créer la transa
+    
+    // Créer une instance de Transaction avec les données correctes
+    const newTransaction = new Transaction({
+      date: date,
+      description: data.Description,
+      montant: parseFloat(data.Montant.replace(',', '.')) // Remplacer les virgules par des points pour les montants décimaux
+    });
+    console.log("new transaction : ", newTransaction);
+    // Enregistrer la transaction
+    await newTransaction.save();
 
-    // Transaction.insertMany(datas)
-    // .then(() => {
-    //   console.log("insertion reussie");
-    // })
-    // .catch((err) => {
-    //   console.error("Erreur lors de l'insertion :", err);
-    // })
-    })
-return datas
-}
+  }
+} catch (error) {
+  console.error('Erreur lors de l\'importation des transactions :', error);
+} 
+ 
+};
 
-
-
-module.exports = { importTransactions};
+module.exports = { importTransactions };

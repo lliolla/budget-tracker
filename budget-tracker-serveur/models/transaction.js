@@ -27,7 +27,7 @@ const transactionSchema = mongoose.Schema(
     default: Date.now
   },
 
- libellé: { type: String,  },
+ description: { type: String,  },
   
     montant: {
       type: mongoose. Decimal128,
