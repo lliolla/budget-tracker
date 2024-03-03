@@ -56,7 +56,7 @@ const importTransactions = async() => {
       const convertFile = processFile(wb, sheetName);
       datas = datas.concat(convertFile);
   });
-  
+  let duplicateCount = 0 // counter for duplicate transactions
 try {
   for (const data of datas) {
     // Convertir la chaîne de caractères représentant la date en objet Date
@@ -64,6 +64,16 @@ try {
     const date = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
     console.log("date:", date, "description:", data.Description, "montant:", data.Montant); // Vérifier les valeurs avant de créer la transa
     
+    // Vérifier si une transaction avec la même date et le même montant existe déjà
+    const existingTransaction = await Transaction.findOne({ date: date, montant: parseFloat(data.Montant.replace(',', '.')) });
+
+    // Si une transaction existe, incrémenter le compteur de doublons et passer à l'itération suivante
+    if (existingTransaction) {
+      console.log("Transaction en double :", existingTransaction);
+      duplicateCount++;
+      continue;
+    }
+
     // Créer une instance de Transaction avec les données correctes
     const newTransaction = new Transaction({
       date: date,
@@ -75,6 +85,7 @@ try {
     await newTransaction.save();
 
   }
+  console.log('Nombre de doublons non importés :', duplicateCount);
 } catch (error) {
   console.error('Erreur lors de l\'importation des transactions :', error);
 } 
