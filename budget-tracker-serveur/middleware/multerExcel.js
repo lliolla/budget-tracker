@@ -11,8 +11,11 @@ const storage = multer.diskStorage({
     callback(null, 'uploads');
   },
   filename: (req, file, callback) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    callback(null, file.fieldname + '-' + uniqueSuffix);
+    const date = new Date().toISOString().slice(0, 10); // Obtenez la date du jour au format YYYY-MM-DD
+    const uniqueSuffix = Math.floor(Math.random() * 900000) + 100000; // Numéro unique à 6 chiffres
+    const extension = MIME_TYPES[file.mimetype]; // Obtenez l'extension du fichier en fonction de son type MIME
+    const filename = `import-${date}-${uniqueSuffix}.${extension}`; // Format du nom de fichier
+    callback(null, filename);
   }
 });
 

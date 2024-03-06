@@ -1,7 +1,7 @@
 const xlsx = require('xlsx');
 const csv = require('csv-parser');
 const fs = require('fs');
-const Transaction = require('../models/Transaction');
+const Transaction = require('../models/transaction');
 const upload = require('../middleware/multerExcel');
 const path = require('path');
 const filePath = path.join(__dirname, '../uploads/import.csv');

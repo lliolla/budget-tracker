@@ -9,6 +9,7 @@ const transactionRoutes = require('./routes/transactions');
 const categoryRoutes = require('./routes/category');
 const subcategoryRoutes = require('./routes/subcategory');
 const importRoutes = require('./routes/import');
+const fileUploadMiddleware = require('./middleware/multerExcel');
  // //Connexion à la base de données MongoDB
 
 mongoose.connect(process.env.MONGODB_URI,
@@ -38,6 +39,7 @@ app.use('/api/v1/auth', userRoutes);// pour l'authentification de l'utilisateur
 app.use('/api/v1', transactionRoutes);// pour le crud des transactions
 app.use('/api/v1', categoryRoutes);// pour le crud des transactions
 app.use('/api/v1', subcategoryRoutes);// pour le crud des transactions
+app.use('/api/v1', importRoutes);// pour les impoorts
 
 app.use('/api/v1', fileUploadMiddleware);// pour la gestion des images et des fichiers
 

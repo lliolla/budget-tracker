@@ -8,11 +8,8 @@ router.get('/transaction/:id',transactionCtrl.getOneTransaction);
 router.post('/transaction',transactionCtrl.createTransaction);
 router.put('/transaction/:id',transactionCtrl.updateTransaction);
 router.delete('/transaction/:id',transactionCtrl.deleteTransaction);
-<<<<<<< HEAD
-=======
-router.delete('/transaction/:id',transactionCtrl.deleteAllTransaction);
+// router.delete('/transaction',transactionCtrl.deleteAllTransaction);
 
->>>>>>> 972b0b1
 
 
 
