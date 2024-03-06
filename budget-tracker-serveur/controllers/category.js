@@ -5,18 +5,18 @@ const mongoose = require('mongoose');
 exports.getAllCategory = async (req, res) => {
   try {
     const category = await Category.find();
-    res.json(category);
+    res.status(200).json({ category, success: true });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({success: false, error: error.message });
   }
 };
 
 exports.getOneCategory = async (req, res) => {
     try {
         const category = await Category.findById(req.params.id);
-        res.json(category);
+        res.status(200).json({ category, success: true });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({success: false, error: error.message });
     }
   }; 
 
@@ -32,31 +32,37 @@ exports.getOneCategory = async (req, res) => {
         title
       });
   
-      newCategory.save();
-      res.status(201).json({ message: 'Catégorie crée avec succès'});
+      const savedCategory = await newCategory.save();
+      res.status(201).json({ savedCategory, success: true });
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(400).json({success: false, error: error.message });
     }
   };
   exports.updateCategory = async (req, res) => {
     let id=req.params.id
     try {
-     Category.findByIdAndUpdate(
+      const category = await Category.findByIdAndUpdate(
         id,
         req.body,
         { new: true }
       );
-      res.json({ message: 'Catégorie modifiée avec succès'});
+      if (!category) {
+        return res.status(404).json({ error: "La categorie n'hexiste pas", success: false });
+      }
+      res.status(200).json({ category, success: true });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message, success: false });
     }
 };
 exports.deleteCategory = async (req, res) => {
-    try {
-        Category.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Catégorie suprimée avec succès'});
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    const category = await Category.findByIdAndDelete(req.params.id);
+    if (!category) {
+      return res.status(404).json({ error: "La categorie n'héxiste pas", success: false });
     }
+    res.status(200).json({ category, success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message, success: false });
+  }
   }; 
   

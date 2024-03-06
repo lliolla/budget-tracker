@@ -45,12 +45,12 @@ exports.deleteSubCategory = async (req, res) => {
   }; 
   exports.updateSubCategory = async (req, res) => {
     try {
-      SubCategory.findByIdAndUpdate(
+        const subcategory = await SubCategory.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
             );
-        res.json({ message: 'Sous-catégorie modifiée avec succès'});
+        res.json(subcategory);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

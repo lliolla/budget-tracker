@@ -7,18 +7,26 @@ const subCategorySchema = mongoose.Schema({
     ref: 'User',
     required: true
   },
-  categoryId: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Category', 
-    required: true },
-  budget:{ 
-    type: Number, 
-    default:0 },
-  title:{
+  categoryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true
+  },
+  budget: {
+    type: Number,
+    default: 0
+  },
+  title: {
     type: String,
-    required: true }
+    required: true
+  },
+  icon: {
+    type: String
+  }
 });
 
 subCategorySchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model('subCategory', subCategorySchema);
+const Subcategory = mongoose.model('Subcategory', subCategorySchema);
+
+module.exports = Subcategory;

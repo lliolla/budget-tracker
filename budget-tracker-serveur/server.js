@@ -52,3 +52,21 @@ server.on('listening', () => {
 
 // Le serveur écoute la requête envoyée
 server.listen(process.env.PORT);
+
+
+// teste requettes a supprimer
+const { importTransactions } = require('./controllers/import');
+
+const filePath = './uploads/import.csv'; // Mettez le chemin absolu ou relatif vers votre fichier CSV
+
+const testImportTransactions = () => {
+  try {
+    const transactions = importTransactions(filePath);
+    console.log('Transactions importées :', transactions.length);
+    
+  } catch (error) {
+    console.error('Une erreur s\'est produite lors de l\'importation des transactions :', error);
+  }
+};
+
+testImportTransactions();

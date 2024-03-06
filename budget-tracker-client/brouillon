@@ -1,0 +1,208 @@
+  {/* <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                 <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                     <table className="min-w-full leading-normal">
+                         <thead>
+                             <tr className='odd:bg-white even:bg-slate-50' >
+                                 <th
+                                     className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate">
+                                     Période 
+                                 </th>
+                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider max-w-xs truncate ">
+                                  Descriptif
+                                 </th>
+                        
+                                 <th
+                                     className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Action
+                                 </th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                           
+                                 <tr> 
+                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                         <div className='flex items-center'>
+                                         <div className="flex-shrink-0 w-8 h-8">
+                                             <img className="w-full h-full rounded-full"
+                                                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                 alt="" />
+                                         </div>
+                                         <div className="ml-3">
+                                             <p className="text-gray-900 whitespace-no-wrap">
+                                             te
+                                             </p>
+                                         </div>
+                                         </div>
+                                     </td>  
+                                     <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
+                                 <div className="flex items-center">
+                                         <div className="flex-shrink-0 w-8 h-8">
+                                             <img className="w-full h-full rounded-full"
+                                                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                 alt="" />
+                                         </div>
+                                         <div className="ml-3">
+                                             <p className="text-gray-900 whitespace-no-wrap">
+                                         te
+                                             </p>
+                                         </div>
+                                     </div>
+                                 </td>
+                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
+                                     <p className="text-gray-900 whitespace-no-wrap">
+                                   te
+                                     </p>
+                                 </td>
+                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
+                                 <p className="text-gray-900 whitespace-no-wrap">
+                                    te
+                                     </p>
+                                   
+                                 </td>
+                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
+                                     <p> €</p>
+                                 </td>
+                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
+                                     <p>o</p>
+                                 </td>
+                                 <td className="px-4 py-4 border-b border-gray-200 bg-white text-sm">
+                                     <p>p</p>
+                                 </td>
+                                 <td className=" px-4 py-4 border-b border-gray-200 bg-white text-sm">
+                                    <div className="flex "> 
+                                    <span
+                                         className="relative inline-block mx-2 px-2 py-2 font-semibold text-green-900 leading-tight"
+                                         >
+                                         <span aria-hidden
+                                             className=" absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                         <span className="relative">p</span>
+                                     </span>  
+                                     <span
+                                         className="relative inline-block mx-2 px-2 py-2 font-semibold text-red-900 leading-tight"
+                                         >
+                                         <span aria-hidden
+                                             className="  absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                                         <span className="relative">p</span>
+                                     </span></div>
+                                 </td> 
+                                 </tr> 
+                         </tbody>
+                     </table>
+                     <div
+                         className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                         <span className="text-xs xs:text-sm text-gray-900">
+                             Showing 1 to 4 of 50 Entries
+                         </span>
+                         <div className="inline-flex mt-2 xs:mt-0">
+                             <button
+                                 className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
+                                 Prev
+                             </button>
+                             <button
+                                 className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
+                                 Next
+                             </button>
+                         </div>
+                     </div>
+                 </div>
+             </div> */}
+
+             ////////////////////////////////////////////////////////////////////////////////
+             / Fonction de contrôleur pour importer un fichier
+exports.importFile = (req, res) => {
+  // Utilisation du middleware de téléchargement de fichiers
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ message: 'Upload failed', error: err.message,success:false });
+    }
+
+    try {
+      let data;
+      // Vérifier le type de fichier uploadé
+      if (req.file.mimetype === 'text/csv') {
+        // Si c'est un fichier CSV
+        data = await processCSV(req.file.path);
+      } else if (req.file.mimetype === 'application/vnd.ms-excel') {
+        // Si c'est un fichier Excel
+        data = await processExcel(req.file.path);
+      } else {
+        // Si le type de fichier n'est ni CSV ni Excel
+        fs.unlinkSync(req.file.path); // Supprimer le fichier uploadé
+        return res.status(400).json({ message: 'Unsupported file format',success:true });
+      }
+
+      // Déplacer le fichier vers le dossier "uploads"
+      const newPath = `uploads/${req.file.filename}`;
+      fs.renameSync(req.file.path, newPath);
+
+      res.status(200).json({ message: 'File uploaded and processed successfully', data,success:true });
+    } catch (error) {
+      res.status(400).json({ error: error.message ,success:false});
+    }
+  });
+};
+
+// Fonction pour traiter un fichier CSV
+const processCSV = (filePath) => {
+  return new Promise((resolve, reject) => {
+    const data = [];
+    fs.createReadStream(filePath)
+      .pipe(csv())
+      .on('data', (row) => {
+        // Ajouter chaque ligne de données
+        data.push(row);
+      })
+      .on('end', () => {
+        // Renvoyer les données une fois le traitement terminé
+        resolve(data);
+      })
+      .on('error', (error) => {
+        reject(error);
+      });
+  });
+};
+
+// Fonction pour traiter un fichier Excel
+const processExcel = (filePath) => {
+  return new Promise((resolve, reject) => {
+    const workbook = xlsx.readFile(filePath);
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const data = xlsx.utils.sheet_to_json(worksheet, { raw: true });
+    resolve(data);
+  });
+};
+
+// Fonction pour mapper les objets et les intégrer à la base de données
+// exports.integrateTransactions = async (data) => {
+//   try {
+//     // Parcourez chaque objet dans les données
+//     for (const item of data) {
+//       // Extrait les informations nécessaires pour créer un document de transaction
+//       const { Libellé, Montant, type, seller, Date } = item;
+
+//       // Créez une instance de modèle de transaction avec ces informations
+//       const transaction = new Transaction({
+
+          // Transformation des données pour correspondre au modèle de transaction
+          const transactions = data.map(transaction => ({
+              categoryId: transaction.categoryId, // Remplacer par la catégorie appropriée
+              subcategoryId: transaction.subcategoryId, // Remplacer par la sous-catégorie appropriée
+              userId: transaction.userId, // Remplacer par l'ID de l'utilisateur approprié
+              seller: transaction.seller,
+              date: transaction.date, // Assurez-vous que la date est au bon format
+              libellé: transaction['Libellé'], // Utilisation de la notation avec crochets pour 'Libellé'
+              montant: transaction.Montant, // Assurez-vous que le montant est correctement formaté
+              type: transaction.type // Assurez-vous que le type est valide (recette ou dépense)
+          }));
+//       });
+
+//       // Enregistrez cette instance dans la base de données
+//       await transaction.save();
+//     }
+
+//     console.log('Transactions integrated successfully');
+//   } catch (error) {
+//     console.error('Error integrating transactions:', error);
+//   }
+// };

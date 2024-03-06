@@ -8,8 +8,7 @@ const userRoutes = require('./routes/user');
 const transactionRoutes = require('./routes/transactions');
 const categoryRoutes = require('./routes/category');
 const subcategoryRoutes = require('./routes/subcategory');
-const fileUploadMiddleware = require('./middlewares/fileUpload');
-
+const importRoutes = require('./routes/import');
  // //Connexion à la base de données MongoDB
 
 mongoose.connect(process.env.MONGODB_URI,
